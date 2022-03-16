@@ -1,6 +1,5 @@
 package io.lamart.rijksart.marlove
 
-import MarloveItem
 import MarloveItems
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -12,10 +11,7 @@ import retrofit2.http.Query
 interface Marlove {
 
     @GET("items")
-    suspend fun getItems(
-        @Query("since_id") sinceId: String? = null,
-        @Query("max_id") maxId: String? = null,
-    ): MarloveItems
+    suspend fun getItems(@Query("max_id") maxId: String? = null): MarloveItems
 
 }
 

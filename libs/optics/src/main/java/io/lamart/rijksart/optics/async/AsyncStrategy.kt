@@ -3,7 +3,7 @@ package io.lamart.rijksart.optics.async
 import kotlinx.coroutines.flow.*
 
 /**
- * The strategy is best understood through example: When the user is repeatedly clicking the download butten and the download is slow and verying in speed, what should happen with downloading happen with the download?
+ * The strategy is best understood through example: When the user is repeatedly clicking the download button and the download is slow and verifying in speed, what should happen with downloading happen with the download?
  * - Cancel current operation and start with the new one (latest)
  * - Allow all, but ensure that the result is in order with the clicks (concat)
  * - Allow all, but do not care about the order in which the results come in (merge)

@@ -11,9 +11,9 @@ interface Storage: RijksmuseumStorage, MarloveStorage
 
 interface MarloveStorage {
 
-    suspend fun getItems(page: Int): MarloveItems?
+    suspend fun getItems(page: String?): MarloveItems?
 
-    suspend fun setItems(page: Int, items: MarloveItems)
+    suspend fun setItems(page: String?, items: MarloveItems)
 
 }
 
@@ -32,10 +32,10 @@ interface RijksmuseumStorage {
 internal fun storageOf(context: Context): Storage =
     object : Storage, StorageMixin by storageMixinOf(context, "data") {
 
-        override suspend fun getItems(page: Int): MarloveItems? =
+        override suspend fun getItems(page: String?): MarloveItems? =
             get(itemsKeyOf(page), MarloveItem.listSerializer())
 
-        override suspend fun setItems(page: Int, items: MarloveItems) =
+        override suspend fun setItems(page: String?, items: MarloveItems) =
             set(itemsKeyOf(page), MarloveItem.listSerializer(), items)
 
         override suspend fun getCollection(page: Int): ArtCollection? =
@@ -50,7 +50,7 @@ internal fun storageOf(context: Context): Storage =
         override suspend fun setDetails(objectNumber: String, details: ArtDetails) =
             set(detailsKeyOf(objectNumber), ArtDetails.serializer(), details)
 
-        private fun itemsKeyOf(page: Int): Preferences.Key<String> =
+        private fun itemsKeyOf(page: String?): Preferences.Key<String> =
             stringPreferencesKey("items_$page")
 
         private fun collectionKeyOf(page: Int): Preferences.Key<String> =

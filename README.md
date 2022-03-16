@@ -99,10 +99,10 @@ into models that fit the UI.
 | | | Add a viewModel
 | | | Instantiate through ViewModelFactory
 | | | Add some UI
-
-| Pagination
-| Clarify DI decissions
-| Pull to refresh
+| | | Migrate to Marlove
+| | | Pagination
+| |  Pull to refresh
+| Clarify DI decisions
 | Generalize and abstract storage
 | URL in build config
 | Centralize dependencies in BuildSrc (or Composite build)

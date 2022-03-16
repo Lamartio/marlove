@@ -3,6 +3,7 @@ package io.lamart.rijksart.main
 import MarloveItems
 import androidx.lifecycle.ViewModel
 import io.lamart.rijksart.logic.State
+import io.lamart.rijksart.logic.getFlattenedItems
 import io.lamart.rijksart.optics.async.Async
 import io.lamart.rijksart.toStateDelegate
 import kotlinx.coroutines.flow.Flow
@@ -37,15 +38,7 @@ fun Flow<State>.getItems(): Flow<List<Item>> =
     map { state ->
         state
             .items
-            .toSortedMap()
-            .values
-            .flatMap { async ->
-                when (async) {
-                    is Async.Success<MarloveItems> -> async.result
-                    else -> emptyList()
-                }
-            }
-            .distinctBy { it._id }
+            .getFlattenedItems()
             .map { Item.Default(it._id, it.text) }
             .let { it + Item.More("more_button") }
     }
