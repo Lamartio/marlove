@@ -1,6 +1,5 @@
 # Introduction
-
-Welcome to my example app that visualizes the Rijksmuseum API! The project is segregated in modules,
+Welcome to my example app that visualizes the Marlove API! The project is segregated in modules,
 because:
 
 - **Compilation times:** Gradle ony compiles modules that are changed
@@ -8,7 +7,6 @@ because:
   unmanageable.
 
 ## Everything is a lib
-
 Mentally I consider all modules as libs. Just like any lib; a lib can have libs etc... Each lib has
 limited public access (so mostly internal) so that there is no confusion in how to use each lib.
 Each lib clearly defines its dependencies, which gives great overview and eases the decision whether
@@ -18,7 +16,6 @@ necessary to use DI at all.
 NOTE: the UI is not yet split into its own module.
 
 ## Structural versus Logical
-
 Code is split in code that just delegates and aggeregates other code and code that is actually doing
 something. The prior I define as structural and the latter as logical. Since the logical is the one
 doing something, this should be the one to be tested.
@@ -28,53 +25,56 @@ requires. Therefore they do not require to be tested. Yet if a project requires 
 can be good to test them (get your green lights before publishing!).
 
 ## Code style
-
 Mostly I use the style Kotlin already uses, that is:
 
-- Rely on interfaces (IOP
+- Rely on interfaces (IOP)
 - Instantiating is done through a function (listOf, mapOf etc...)
 - ...or through an extension method (toList, toMap)
 - Usually I write methods, but in some cases it could be useful to create a property holding a
   lambda. The benefit is that it is easier to pass around.
+  
+## About Dependency Injection
+For managing dependencies, there are about 4 ways of doing so (from simple to complex):
+- Plain Structural Objects (data classes)
+- Class delegation ([Pacoworks example](https://www.pacoworks.com/2018/02/25/simple-dependency-injection-in-kotlin-part-1/))
+- Simple Injection frameworks ([Koin](https://insert-koin.io/)) & [Kodein](https://github.com/Kodein-Framework/Kodein-DI))
+- Full DI frameworks ([Dagger+Hilt](https://dagger.dev/))
+
+When apps are segregated in separate modules, it becomes visible that there are not too many dependencies to manage.
+Even when the app grows the flattened list of dependencies will not supersede 50, which is still easily manageable with OOP and Kotlin Techniques.
+Therefore I chose to use Class Delegation for this app.
 
 ## :libs:domain
-
 All that is within the 'domain' of this app is included in here. This is a good place for
 project-wide utilities, or (as in the case of this app) models that are unambiguous through the
 whole project.
 
-## :libs:rijksmuseum
-
+## :libs:marlove
 Internally this is connecting with an API, but for the one using the 'lib' it is just an interface
-with some asynchronous/suspending actions. Hence it referenced as `val museum` in the rest of the
+with some asynchronous/suspending actions. Hence it referenced as `val marlove` in the rest of the
 project. To proof API working, there are EndToEnd tests included.
 
 ## :libs:services
-
 This is an Android library exposing all the device API in a way I want to use it within this domain.
 In the case of this app it exposes a bridge between persistence and the domain-objects. To keep
 things simple; the storage is just a SharedPreferences implementation (through DataStore), but when
 the app grows, it would be beneficial to switch to an SqlLite variant like Room.
 
 ## :libs:optics
-
 I favor to create a single immutable state for its testability and predictability. Initially I used
-Arrow-kt Optics to do so, but it required `kotlin-kap` and too much libraries. Therefore, I just
+Arrow-kt Optics to do so, but it required `kotlin-kapt` and too much libraries. Therefore, I just
 wrote the parts I needed and explained them tests.
 
 ## :libs:logic
-
-Converts the stateless interfaces like `RijksMuseum` and `Services.Storage` to single immutable
+Converts the stateless interfaces like `Marlove` and `Services.Storage` to single immutable
 state. The state gets shared through a flow and updated through actions.
 
 ## :app
-
-The actual compilable application. In it entry-point `RijksApplication` it instantiates all the
+The actual compilable application. In it entry-point `MockyApplication` it instantiates all the
 above. By this point, the application is only displaying State, calling actions and mapping State
 into models that fit the UI.
 
 # Backlog
-
 | TODO | DOING | DONE |
 | ---- | ----- | ---- |
 | | | Discover the Rijksmuseum API: https://runkit.com/lamartio/621f1d2429367b00081238a4 (I will delete this a week after delivering)
@@ -99,11 +99,12 @@ into models that fit the UI.
 | | | Add a viewModel
 | | | Instantiate through ViewModelFactory
 | | | Add some UI
-| | | Migrate to Marlove
-| | | Pagination
-| | | Pull to refresh
-| | | give packages a generic name
-| Clarify DI decisions
+| | | Discover Marlove API
+| | | Migrate to Marlove API
+| | | Add Pagination to the main UI
+| | | Add Pull to refresh to the main UI
+| | | Give packages a generic name
+| | | Clarify DI decisions
 | Generalize and abstract storage
 | URL in build config
 | Centralize dependencies in BuildSrc (or Composite build)

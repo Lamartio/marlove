@@ -15,13 +15,13 @@ interface Logic {
 
 }
 
-fun logicOf(museum: Marlove, services: Services, scope: CoroutineScope): Logic {
+fun logicOf(marlove: Marlove, services: Services, scope: CoroutineScope): Logic {
     val state = MutableStateFlow(State())
     val source = sourceOf(
         get = { state.value },
         set = state::tryEmit
     )
-    val dependencies = dependenciesOf(source, museum, services, scope)
+    val dependencies = dependenciesOf(source, marlove, services, scope)
 
     return object : Logic {
         override val state: Flow<State> = state

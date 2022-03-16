@@ -14,10 +14,10 @@ class MockyApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         val scope = MainScope()
-        val museum = marloveOf(key = "6fff872af5a76800585c969ac8dff3d6")
+        val marlove = marloveOf(key = "6fff872af5a76800585c969ac8dff3d6")
         val services = servicesOf(this)
 
-        logic = logicOf(museum, services, scope)
+        logic = logicOf(marlove, services, scope)
 
         logic.actions.refresh()
     }

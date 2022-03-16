@@ -13,12 +13,12 @@ internal interface Dependencies : Services {
 
 internal fun dependenciesOf(
     source: Source<State>,
-    museum: Marlove,
+    marlove: Marlove,
     services: Services,
     scope: CoroutineScope,
 ): Dependencies =
     object : Dependencies, Services by services {
         override val source: Source<State> = source
-        override val marlove: Marlove = museum
+        override val marlove: Marlove = marlove
         override val scope: CoroutineScope = scope
     }
