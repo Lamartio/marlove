@@ -25,16 +25,14 @@ class MainFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         view
             .let { it as ComposeView }
-            .setContent {
-                MainContent(viewModel, ::showDetails)
-            }
+            .setContent { MainContent(viewModel, ::showDetails) }
     }
 
-    private fun showDetails(item: Item.Art) {
-        viewModel.loadDetails(item.objectNumber)
+    private fun showDetails(item: Item) {
+        viewModel.select(item.id)
 
         MainFragmentDirections
-            .actionMainFragmentToDetailsFragment(item.objectNumber)
+            .actionMainFragmentToDetailsFragment(id = item.id)
             .let(::navigate)
     }
 }

@@ -1,5 +1,6 @@
 package io.lamart.rijksart.details
 
+import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
@@ -17,7 +18,8 @@ import io.lamart.rijksart.R
 
 @Composable
 fun DetailsContent(viewModel: DetailsViewModel) {
-    val art = viewModel.details.value?.artObject
+    val value = viewModel.details.value
+
     Column(modifier = Modifier.fillMaxSize()) {
         BoxWithConstraints {
             Surface {
@@ -25,17 +27,14 @@ fun DetailsContent(viewModel: DetailsViewModel) {
                     modifier = Modifier.fillMaxSize(),
                 ) {
                     Header(
-                        art?.webImage?.url,
-                        this@BoxWithConstraints.maxWidth
+                        model = value?.image,
+                        width = this@BoxWithConstraints.maxWidth
                     )
-                    Title(art?.longTitle ?: "")
-                    art?.plaqueDescriptionEnglish?.let {
-                        Property(
-                            label = stringResource(R.string.description),
-                            value = it
-                        )
-                    }
-                    art?.subTitle?.let { Property(stringResource(R.string.specs), it) }
+                    Title(value?.text ?: "")
+                    Property(
+                        label = stringResource(R.string.confidence),
+                        value = value?.confidence?.toString() ?: ""
+                    )
                 }
             }
         }
@@ -47,7 +46,7 @@ private fun Header(
     model: String?,
     width: Dp,
     ratio: Float = 9f / 16f,
-) {
+) =
     AsyncImage(
         model = model,
         contentScale = ContentScale.Crop,
@@ -56,12 +55,9 @@ private fun Header(
             .height(width * ratio)
             .fillMaxWidth()
     )
-}
 
 @Composable
-private fun Title(
-    text: String,
-) {
+private fun Title(text: String) =
     Column(modifier = Modifier.padding(16.dp)) {
         Text(
             text = text,
@@ -69,7 +65,6 @@ private fun Title(
             fontWeight = FontWeight.Bold
         )
     }
-}
 
 @Composable
 fun Property(label: String, value: String) {

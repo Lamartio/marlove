@@ -1,12 +1,23 @@
 package io.lamart.rijksart.services
 
+import MarloveItems
 import android.content.Context
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.stringPreferencesKey
 import io.lamart.rijksart.domain.ArtCollection
 import io.lamart.rijksart.domain.ArtDetails
 
-interface Storage {
+interface Storage: RijksmuseumStorage, MarloveStorage
+
+interface MarloveStorage {
+
+    suspend fun getItems(page: Int): MarloveItems?
+
+    suspend fun setItems(page: Int, items: MarloveItems)
+
+}
+
+interface RijksmuseumStorage {
 
     suspend fun getCollection(page: Int): ArtCollection?
 
@@ -15,10 +26,17 @@ interface Storage {
     suspend fun getDetails(objectNumber: String): ArtDetails?
 
     suspend fun setDetails(objectNumber: String, details: ArtDetails)
+
 }
 
 internal fun storageOf(context: Context): Storage =
     object : Storage, StorageMixin by storageMixinOf(context, "data") {
+
+        override suspend fun getItems(page: Int): MarloveItems? =
+            get(itemsKeyOf(page), MarloveItem.listSerializer())
+
+        override suspend fun setItems(page: Int, items: MarloveItems) =
+            set(itemsKeyOf(page), MarloveItem.listSerializer(), items)
 
         override suspend fun getCollection(page: Int): ArtCollection? =
             get(collectionKeyOf(page), ArtCollection.serializer())
@@ -32,11 +50,13 @@ internal fun storageOf(context: Context): Storage =
         override suspend fun setDetails(objectNumber: String, details: ArtDetails) =
             set(detailsKeyOf(objectNumber), ArtDetails.serializer(), details)
 
+        private fun itemsKeyOf(page: Int): Preferences.Key<String> =
+            stringPreferencesKey("items_$page")
+
         private fun collectionKeyOf(page: Int): Preferences.Key<String> =
             stringPreferencesKey("collection_$page")
 
         private fun detailsKeyOf(objectNumber: String): Preferences.Key<String> =
             stringPreferencesKey("details_$objectNumber")
-
 
     }

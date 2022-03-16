@@ -1,7 +1,7 @@
 package io.lamart.rijksart.optics
 
 
-interface Mask<T : Any, R : Any> {
+interface Mask<T , R > {
     fun select(source: T): R?
     fun copy(source: T, focus: R): T
 }

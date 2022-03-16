@@ -1,22 +1,24 @@
 package io.lamart.rijksart.details
 
+import MarloveItem
 import androidx.lifecycle.ViewModel
 import io.lamart.rijksart.domain.ArtDetails
+import io.lamart.rijksart.logic.Details
+import io.lamart.rijksart.logic.State
 import io.lamart.rijksart.toStateDelegate
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
-class DetailsViewModel(
-    details: Flow<ArtDetails?>,
-    isLoading: Flow<Boolean>,
-    val loadDetails: (objectNumber: String) -> Unit,
-    val clearDetails: () -> Unit,
-) : ViewModel() {
+class DetailsViewModel(details: Flow<MarloveItem?>) : ViewModel() {
 
     val details by details.toStateDelegate(null)
-    val isLoading by isLoading.toStateDelegate(false)
 
-    override fun onCleared() {
-        super.onCleared()
-        clearDetails()
-    }
 }
+
+fun Flow<State>.getDetails(): Flow<MarloveItem?> =
+    map {
+        when (val details = it.details) {
+            Details.None -> null
+            is Details.Some -> details.item
+        }
+    }

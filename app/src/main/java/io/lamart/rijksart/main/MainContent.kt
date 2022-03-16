@@ -9,26 +9,21 @@ import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
 import com.google.android.material.composethemeadapter.MdcTheme
 
 @Composable
-fun MainContent(viewModel: MainViewModel, showDetails: (item: Item.Art) -> Unit) =
+fun MainContent(viewModel: MainViewModel, showDetails: (item: Item) -> Unit = {}) =
     with(viewModel) {
         MdcTheme {
             LazyColumn {
-                val items = collection.value
+                val values = items.value
 
-                items(items.size, { items[it].key }) { index ->
-                    val item = items[index]
-
-                    when (item) {
-                        is Item.Header -> HeaderItem(item.text)
-                        is Item.Art -> ArtItem(item, showDetails)
-                        is Item.More -> MoreButton(loadMore)
+                items(values.size, { values[it].id }) { index ->
+                    when (val value = values[index]) {
+                        is Item.Default -> DefaultItem(value, showDetails)
+                        is Item.More -> MoreButton(viewModel.loadMore)
                     }
                 }
             }
@@ -65,48 +60,20 @@ fun Loader(isLoading: Boolean) =
         }
     }
 
-@Composable
-fun HeaderItem(text: String) =
-    Column {
-        Text(
-            text = text,
-            style = MaterialTheme.typography.caption,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
-            modifier = Modifier.padding(horizontal = 8.dp)
-        )
-        Divider()
-    }
-
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun ArtItem(item: Item.Art, showDetails: (item: Item.Art) -> Unit) =
+fun DefaultItem(item: Item.Default, showDetails: (item: Item.Default) -> Unit) =
     with(item) {
         Column(Modifier.clickable { showDetails(item) }) {
             ListItem(
-                icon = {
-                    AsyncImage(
-                        model = icon,
-                        contentDescription = null,
-                        contentScale = ContentScale.Crop,
-                        modifier = Modifier.size(40.dp),
-                    )
-                },
                 text = {
                     Text(
                         text,
-                        maxLines = 2,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                },
-                secondaryText = {
-                    Text(
-                        description,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
-                }
+                },
             )
-            Divider(startIndent = 72.dp)
+            Divider()
         }
     }

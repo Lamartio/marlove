@@ -1,5 +1,6 @@
 package io.lamart.rijksart.logic
 
+import io.lamart.rijksart.marlove.Marlove
 import io.lamart.rijksart.optics.sourceOf
 import io.lamart.rijksart.rijksmuseum.RijksMuseum
 import io.lamart.rijksart.services.Services
@@ -15,7 +16,7 @@ interface Logic {
 
 }
 
-fun logicOf(museum: RijksMuseum, services: Services, scope: CoroutineScope): Logic {
+fun logicOf(museum: Marlove, services: Services, scope: CoroutineScope): Logic {
     val state = MutableStateFlow(State())
     val source = sourceOf(
         get = { state.value },

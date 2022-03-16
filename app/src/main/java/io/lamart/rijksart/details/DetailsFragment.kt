@@ -11,16 +11,9 @@ import androidx.navigation.fragment.navArgs
 
 class DetailsFragment : Fragment() {
 
-    private val args: DetailsFragmentArgs by navArgs()
+    // potentially necessary for refreshing the details
+    // private val args: DetailsFragmentArgs by navArgs()
     private val viewModel: DetailsViewModel by activityViewModels()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        if (savedInstanceState == null) {
-            viewModel.loadDetails(args.objectNumber)
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

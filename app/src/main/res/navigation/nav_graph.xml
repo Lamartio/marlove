@@ -23,7 +23,7 @@
         android:name="io.lamart.rijksart.details.DetailsFragment"
         android:label="DetailsFragment">
         <argument
-            android:name="objectNumber"
+            android:name="id"
             app:argType="string" />
     </fragment>
 </navigation>
