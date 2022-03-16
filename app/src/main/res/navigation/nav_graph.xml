@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/mainFragment"
-        android:name="io.lamart.rijksart.main.MainFragment"
+        android:name="io.lamart.mocky.main.MainFragment"
         android:label="main_fragment"
         tools:layout="@layout/main_fragment">
         <action
@@ -20,7 +20,7 @@
     </fragment>
     <fragment
         android:id="@+id/detailsFragment"
-        android:name="io.lamart.rijksart.details.DetailsFragment"
+        android:name="io.lamart.mocky.details.DetailsFragment"
         android:label="DetailsFragment">
         <argument
             android:name="id"

@@ -6,6 +6,9 @@
       <module name="ahold-art.libs.logic" target="11" />
       <module name="ahold-art.libs.services" target="11" />
       <module name="logic" target="11" />
+      <module name="mocky.app" target="11" />
+      <module name="mocky.libs.logic" target="11" />
+      <module name="mocky.libs.services" target="11" />
       <module name="rijks-art.app" target="11" />
       <module name="rijks-art.libs.logic" target="11" />
       <module name="rijks-art.libs.services" target="11" />

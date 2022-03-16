@@ -12,7 +12,7 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-rootProject.name = "rijks-art"
+rootProject.name = "mocky"
 
 include ':libs:optics'
 include ':libs:domain'

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="io.lamart.rijksart">
+    package="io.lamart.mocky">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <application
@@ -9,11 +9,11 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:name=".RijksApplication"
+        android:name="io.lamart.mocky.MockyApplication"
         android:theme="@style/Theme.MyApplication">
         <activity
             android:theme="@style/Theme.MaterialComponents.Light.NoActionBar"
-            android:name=".RijksActivity"
+            android:name="io.lamart.mocky.MockyActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

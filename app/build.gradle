@@ -8,7 +8,7 @@ android {
     compileSdk 31
 
     defaultConfig {
-        applicationId "io.lamart.rijksart"
+        applicationId "io.lamart.mocky"
         minSdk 21
         targetSdk 31
         versionCode 1
@@ -43,7 +43,6 @@ dependencies {
     implementation(project(':libs:optics'))
     implementation(project(":libs:domain"))
     implementation(project(":libs:marlove"))
-    implementation(project(":libs:rijksmuseum"))
     implementation(project(":libs:services"))
     implementation(project(":libs:logic"))
     implementation 'androidx.core:core-ktx:1.7.0'

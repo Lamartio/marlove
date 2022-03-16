@@ -4,7 +4,7 @@ Welcome to my example app that visualizes the Rijksmuseum API! The project is se
 because:
 
 - **Compilation times:** Gradle ony compiles modules that are changed
-- **Scalability:** When a module grows, it got split. Thereby nothing gets so big that it becomes
+- **Scalability:** When a module grows, it gets split. Thereby nothing gets so big that it becomes
   unmanageable.
 
 ## Everything is a lib
@@ -102,6 +102,7 @@ into models that fit the UI.
 | | | Migrate to Marlove
 | | | Pagination
 | | | Pull to refresh
+| | | give packages a generic name
 | Clarify DI decisions
 | Generalize and abstract storage
 | URL in build config
