@@ -2,6 +2,10 @@ package io.lamart.rijksart.logic.utils
 
 import kotlinx.coroutines.flow.*
 
+/**
+ * This is a generic way for for loading a datasource from persistence, then pull it from the network and last write it to persistence.
+ */
+
 fun <P, T : Any> getAndFetch(
     get: suspend (payload: P) -> T?,
     set: suspend (payload: P, value: T) -> Unit,

@@ -11,24 +11,29 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.SwipeRefreshState
 import com.google.android.material.composethemeadapter.MdcTheme
 
 @Composable
 fun MainContent(viewModel: MainViewModel, showDetails: (item: Item) -> Unit = {}) =
     with(viewModel) {
         MdcTheme {
-            LazyColumn {
-                val values = items.value
+            SwipeRefresh(
+                state = SwipeRefreshState(isLoading.value),
+                onRefresh = refresh,
+            ) {
+                LazyColumn {
+                    val values = items.value
 
-                items(values.size, { values[it].id }) { index ->
-                    when (val value = values[index]) {
-                        is Item.Default -> DefaultItem(value, showDetails)
-                        is Item.More -> MoreButton(viewModel.loadMore)
+                    items(values.size, { values[it].id }) { index ->
+                        when (val value = values[index]) {
+                            is Item.Default -> DefaultItem(value, showDetails)
+                            is Item.More -> MoreButton(viewModel.loadMore)
+                        }
                     }
                 }
             }
-
-            Loader(isLoading = isLoading.value)
         }
     }
 

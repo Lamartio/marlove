@@ -1,7 +1,7 @@
 package io.lamart.rijksart.main
 
-import MarloveItems
 import androidx.lifecycle.ViewModel
+import io.lamart.rijksart.logic.Logic
 import io.lamart.rijksart.logic.State
 import io.lamart.rijksart.logic.getFlattenedItems
 import io.lamart.rijksart.optics.async.Async
@@ -9,12 +9,21 @@ import io.lamart.rijksart.toStateDelegate
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class MainViewModel(
+class MainViewModel internal constructor(
     items: Flow<List<Item>>,
     isLoading: Flow<Boolean>,
     val loadMore: () -> Unit,
-    val select: (id: String) -> Unit
+    val select: (id: String) -> Unit,
+    val refresh: () -> Unit
 ) : ViewModel() {
+
+    constructor(logic: Logic): this(
+        items = logic.state.getItems(),
+        isLoading = logic.state.isLoadingCollection(),
+        loadMore = logic.actions::appendItems,
+        select = logic.actions.select,
+        refresh = logic.actions::refresh
+    )
 
     val isLoading by isLoading.toStateDelegate(false)
 

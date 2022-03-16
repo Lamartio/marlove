@@ -4,7 +4,6 @@ import android.app.Application
 import io.lamart.rijksart.logic.Logic
 import io.lamart.rijksart.logic.logicOf
 import io.lamart.rijksart.marlove.marloveOf
-import io.lamart.rijksart.rijksmuseum.rijksMuseumOf
 import io.lamart.rijksart.services.servicesOf
 import kotlinx.coroutines.MainScope
 
@@ -20,7 +19,7 @@ class RijksApplication : Application() {
 
         logic = logicOf(museum, services, scope)
 
-        logic.actions.appendCollection()
+        logic.actions.refresh()
     }
 
 }

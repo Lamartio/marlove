@@ -5,10 +5,11 @@ import io.lamart.rijksart.optics.Source
 import io.lamart.rijksart.optics.async.Async
 import io.lamart.rijksart.optics.compose
 import io.lamart.rijksart.optics.lensOf
-import kotlinx.coroutines.flow.Flow
 
 interface Actions {
-    fun appendCollection()
+    fun appendItems()
+    fun refresh()
+
     val select: (id: String) -> Unit
     val getAndFetchItems: (page: String?) -> Unit
 }
@@ -35,19 +36,33 @@ internal fun Dependencies.toActions(): Actions =
                     .set(details)
             }
 
-        override fun appendCollection() {
+        override fun appendItems() {
             val items = source
                 .compose(lensOf({ items }, { copy(items = it) }))
                 .get()
-            val isNotExecuting = items.values.none { it is Async.Executing }
+            val isExecuting = items.values.any { it is Async.Executing }
 
-            if (isNotExecuting) {
-                val id = items
+            if (!isExecuting) {
+                items
                     .getFlattenedItems()
                     .lastOrNull()
                     ?._id
+                    .let(getAndFetchItems)
+            }
+        }
 
-                getAndFetchItems(id)
+        override fun refresh() {
+            val items = source
+                .compose(lensOf({ items }, { copy(items = it) }))
+                .get()
+            val isExecuting = items.values.any { it is Async.Executing }
+
+            if (!isExecuting) {
+                items
+                    .keys
+                    .let { it + null }
+                    .distinct()
+                    .forEach(getAndFetchItems)
             }
         }
     }

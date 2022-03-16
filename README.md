@@ -101,7 +101,7 @@ into models that fit the UI.
 | | | Add some UI
 | | | Migrate to Marlove
 | | | Pagination
-| |  Pull to refresh
+| | | Pull to refresh
 | Clarify DI decisions
 | Generalize and abstract storage
 | URL in build config
